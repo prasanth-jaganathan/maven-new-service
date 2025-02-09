@@ -34,7 +34,7 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v4.2.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_HOST_URL: "https://sonarcloud.io"
 	args: >
           -Dsonar.projectKey=prasanth-jaganathan_maven-new-service
           -Dsonar.verbose=true
