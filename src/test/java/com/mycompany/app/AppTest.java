@@ -1,48 +1,42 @@
 package com.mycompany.app;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import static org.mockito.Mockito.*;
+/**
+ * Background service that simulates monitoring or processing tasks.
+ */
+public class App {
 
-public class AppTest {
+    private static final String SERVICE_STATUS = "Service is running...";
+    private ScheduledExecutorService scheduler;
 
-    private App app;
-    private ScheduledExecutorService schedulerMock;
-
-    @BeforeEach
-    public void setup() {
-        // Create a mock of ScheduledExecutorService
-        schedulerMock = mock(ScheduledExecutorService.class);
-        
-        // Use the mocked scheduler in the App
-        app = new App(schedulerMock);
+    // Constructor injection for easier testing
+    public App(ScheduledExecutorService scheduler) {
+        this.scheduler = scheduler;
     }
 
-    @Test
-    public void testBackgroundTaskExecution() throws InterruptedException {
-        // Call the method that starts the scheduled task
-        app.startBackgroundService();
+    public App() {
+        this.scheduler = Executors.newScheduledThreadPool(1);
+    }
 
-        // Verify that the scheduled task is run at least once
-        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
-        verify(schedulerMock).scheduleAtFixedRate(taskCaptor.capture(), eq(0L), eq(10L), eq(TimeUnit.SECONDS));
+    public void startBackgroundService() {
+        // Schedule a task to simulate background work every 10 seconds.
+        scheduler.scheduleAtFixedRate(() -> {
+            // Simulating background work (could be a health check or task processing).
+            System.out.println(SERVICE_STATUS);
+            performBackgroundTask();
+        }, 0, 10, TimeUnit.SECONDS);
+    }
 
-        // Capture the Runnable task and execute it
-        Runnable capturedTask = taskCaptor.getValue();
-        capturedTask.run(); // This simulates the execution of the background task.
-
-        // Verify that the background task was indeed executed
-        // You can use logging or actual methods to assert the results.
-        // For simplicity, we'll just verify if performBackgroundTask was called:
-        // Here, we would check the effect, but for simplicity, we can assume print logs.
-        
-        // This would normally be done with assertions on log output or state change
-        // For example, using a logger with an in-memory appender or a mock to capture output
+    /**
+     * Simulate performing a background task.
+     * This could be any functionality like monitoring, database cleanup, or more.
+     */
+    private static void performBackgroundTask() {
+        // Simulate some complex background task, like checking system health or processing data.
+        System.out.println("Performing background task... Checking system health.");
     }
 }
 
