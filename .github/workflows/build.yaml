@@ -54,4 +54,20 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/maven-new-service:build-${{ github.run_number }}
-    
+
+      - name: Checkout k8s manifest repo update
+        uses: actions/checkout@v2
+        with:
+          repository: prasanth-jaganathan/argocd-private-repo.git
+          token: ${{ secrets.PAT_TOKEN }}
+          path: k8s-manifests
+
+      - name: Update k8s manifest with new image tag
+        run: |
+          cd argocd-manifest
+          sed -i 's|image: .*$|image: ${{ secrets.DOCKER_USERNAME }}/maven-new-service:build-${{ github.run_number }}|' k8s-manifests/guestbook/guestbook-ui-deployment.yaml
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .
+          git commit -m "Update image tag to build-${{ env.BUILD_NUMBER }}"
+          git push
