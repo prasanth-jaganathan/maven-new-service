@@ -66,8 +66,9 @@ jobs:
       - name: Update k8s manifest with new image tag
         run: |
           sed -i 's|image: .*$|image: ${{ secrets.DOCKER_USERNAME }}/maven-new-service:build-${{ github.run_number }}|' k8s-manifests/guestbook/guestbook-ui-deployment.yaml
-          git config --global user.email "prasanth.jaganathan98@gmail.com"
-          git config --global user.name "prasanth-jaganathan"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           git add .
           git commit -m "Update image tag to build-${{ github.run_number }}"
-          git push
+          git status
+          git push origin main
