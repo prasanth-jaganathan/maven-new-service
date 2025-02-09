@@ -40,3 +40,4 @@ jobs:
             -Dsonar.projectKey=prasanth-jaganathan_maven-new-service
             -Dsonar.verbose=true
             -Dsonar.organization=prasanth-jaganathan
+            -Dsonar.java.binaries=target/classes            
