@@ -56,11 +56,12 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/maven-new-service:build-${{ github.run_number }}
 
       - name: Checkout k8s manifest repo update
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: prasanth-jaganathan/argocd-private-repo.git
           token: ${{ secrets.PAT_TOKEN }}
           path: k8s-manifests
+          ref: main
 
       - name: Update k8s manifest with new image tag
         run: |
